@@ -31,12 +31,11 @@ const StateParks = () => {
     const [thisDestinationObject, setThisDestinationObject] = useState({});
     const [ready, setReady] = useState(false);
     const [called, setCalled] = useState(false);
-    // const isLoaded = true;
+
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(function (position) {
             let lat = position.coords.latitude;
             let lng = position.coords.longitude;
-            // SHOULD BE "position" below
             let myPosition = { lat: lat, lng: lng };
             setPosition(myPosition);
             const config = {
@@ -69,7 +68,7 @@ const StateParks = () => {
                     calculateRoute();
                     setReady(true);
                     if (!called) {
-                        // googleCall(configuration);
+                        googleCall(configuration);
                         setCalled(true);
                     }
                 }
@@ -78,39 +77,27 @@ const StateParks = () => {
     }, [isLoaded, timingTest]);
 
     const googleCall = async (configuration) => {
-        console.log("CONFIG", configuration);
-        // await axios(configuration)
-        //     .then(function (response) {
-        //         console.log("RESPONSE!!!!!!", response);
-        //         // let data = response.data;
-        //         // return data.candidates[0];
-        //     })
-        //     .catch(function (error) {
-        //         console.log(error);
-        //     });
-        // console.log("jsdfhjldsahfjhdsaljfkhsa", parkData);
+        await axios(configuration)
+            .then(function (response) {
+                let data = response.data;
+                return data.candidates[0];
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        console.log("jsdfhjldsahfjhdsaljfkhsa", parkData);
 
-        // console.log("config in google call", configuration);
-        // // eslint-disable-next-line no-undef
-        // infowindow = new google.maps.InfoWindow();
-        // // eslint-disable-next-line no-undef
-        // var service = new google.maps.places.PlacesService(map);
-        // //     .then((data) => console.log("CHING CHING", data));
-        // service.findPlaceFromQuery(configuration, function (results, status) {
-        //     // eslint-disable-next-line no-undef
-        //     if (status === google.maps.places.PlacesServiceStatus.OK) {
-        //         console.log("RESULTS", results);
-        //         // for (var i = 0; i < results.length; i++) {
-        //         //     createMarker(results[i]);
-        //         // }
-        //         // map.setCenter(results[0].geometry.location);
-        //     }
-        // });
-    };
-
-    const getClosestStatePark = async () => {
-        let closestDestination = {};
-        let destinationObjectArray = [];
+        console.log("config in google call", configuration);
+        infowindow = new google.maps.InfoWindow();
+        var service = new google.maps.places.PlacesService(map);
+        service.findPlaceFromQuery(configuration, function (results, status) {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                for (var i = 0; i < results.length; i++) {
+                    createMarker(results[i]);
+                }
+                map.setCenter(results[0].geometry.location);
+            }
+        });
     };
 
     async function calculateRoute() {
@@ -122,7 +109,6 @@ const StateParks = () => {
             console.log("thisDestinationObject in calculteRoute fuct is bad");
             return;
         }
-        // eslint-disable-next-line no-undef
         const directionsService = new google.maps.DirectionsService();
         console.log("INSIDE CALC ROOT", thisDestinationObject);
         const results = await directionsService.route({
@@ -131,22 +117,12 @@ const StateParks = () => {
                 thisDestinationObject.location.lat +
                 "," +
                 thisDestinationObject.location.lng,
-            // eslint-disable-next-line no-undef
             travelMode: google.maps.TravelMode.DRIVING,
         });
         setDirectionsResponse(results);
         setDistance(results.routes[0].legs[0].distance.text);
         setDuration(results.routes[0].legs[0].duration.text);
     }
-
-    function clearRoute() {
-        setDirectionsResponse(null);
-        setDistance("");
-        setDuration("");
-    }
-
-    // document.body.style.backgroundImage = `url(${require("../HomePage/mountains.png")})`;
-    // document.body.style.backgroundSize = "cover";
 
     if (!ready || !isLoaded || !timingTest) {
         return <Loading />;

@@ -1,23 +1,8 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {
-    Box,
-    Button,
-    ButtonGroup,
-    Divider,
-    Flex,
-    HStack,
-    IconButton,
-    Input,
-    SkeletonText,
-    Text,
-    useColorModeValue,
-} from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import "./MainPage.css";
 
 function HomePage() {
-    const parkButtonString = `Stay Local ${"\n"}`;
-
     return (
         <>
             <img class="bg" src="mountains.png" alt="" />

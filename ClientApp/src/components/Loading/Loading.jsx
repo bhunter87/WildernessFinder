@@ -2,9 +2,6 @@ import { Box, Flex } from "@chakra-ui/react";
 import React from "react";
 
 const Loading = () => {
-    // document.body.style.backgroundImage = `url(${require("../HomePage/mountains.png")})`;
-    // document.body.style.backgroundSize = "cover";
-
     return (
         <>
             <img class="bg" src="mountains.png" alt="" />

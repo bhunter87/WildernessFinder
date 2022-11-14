@@ -16,7 +16,6 @@ const NPS_API_KEY = process.env.NPS_API_KEY;
 const MAP_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 const YELP_API_KEY = process.env.YELP_API_KEY;
 const API_LOADER_DATA = {
-    // libraries: ["places"],
     googleMapsApiKey: MAP_API_KEY,
 };
 const baseUrl = process.env.EXPLORE_API_BASE_ADDRESS;
@@ -69,11 +68,6 @@ const NationalParks = () => {
         });
     }, [isLoaded, timingTest]);
 
-    const getClosestStatePark = async () => {
-        let closestDestination = {};
-        let destinationObjectArray = [];
-    };
-
     async function calculateRoute() {
         if (
             thisDestinationObject === {} ||
@@ -92,18 +86,11 @@ const NationalParks = () => {
                 thisDestinationObject.location.lat +
                 "," +
                 thisDestinationObject.location.lng,
-            // eslint-disable-next-line no-undef
             travelMode: google.maps.TravelMode.DRIVING,
         });
         setDirectionsResponse(results);
         setDistance(results.routes[0].legs[0].distance.text);
         setDuration(results.routes[0].legs[0].duration.text);
-    }
-
-    function clearRoute() {
-        setDirectionsResponse(null);
-        setDistance("");
-        setDuration("");
     }
 
     if (!ready || !isLoaded || !timingTest) {
